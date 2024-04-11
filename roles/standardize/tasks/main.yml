@@ -1,0 +1,35 @@
+- name: Step 1 | Standardize
+  include_tasks: 01_standardize.yml
+  tags:
+    - step1
+    - standardize
+
+- name: Step 2 | Users
+  include_tasks: 02_users.yml
+  tags: 
+    - step2
+    - users
+
+- name: Step 3 | VM
+  include_tasks: 03_vm.yml
+  tags: 
+    - step3
+    - vm
+
+- name: Step 4 | Time
+  include_tasks: 04_time.yml
+  tags:
+    - step4
+    - time
+
+- name: Step 5 | ssh
+  include_tasks: 05_ssh.yml
+  tags:
+    - step5
+    - ssh
+
+- name: Step 6 | Packages
+  include_tasks: 06_packages.yml
+  tags:
+    - step6
+    - packages

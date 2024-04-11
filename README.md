@@ -1,4 +1,11 @@
-# home-lab
+# home-ansible
 
-A. Scripts
-  1. install-ansible.sh
+## services.scorch.com
+Ports in use
+
+| PORT   | SERVICE        |
+| ------ | -------------- |
+| 5051   | dockge         |
+| 80     | nginx-manager  |
+| 81     | nginx-manager  |
+| 443    | nginx-manager  |

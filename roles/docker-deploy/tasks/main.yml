@@ -1,0 +1,34 @@
+- name: Docker Deploy | Check if docker-compose.yaml exists
+  stat: 
+    path: docker-compose/{{ application_target }}/docker-compose.yaml
+  register: result
+  failed_when: not result.stat.exists
+  delegate_to: localhost
+
+- name: Docker Deploy | Ensure folder exists
+  file:
+    path: /opt/stacks/{{ application_target }}/
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Docker Deploy | Copying docker-compose file to {{ inventory_hostname }}
+  template:
+    src: "{{ application_target }}/docker-compose.yaml.j2"
+    dest: "/opt/stacks/{{ application_target }}/docker-compose.yaml"
+    mode: '0644'
+    owner: root
+    group: root
+  become: yes
+
+# - name: Docker Deploy | Copying docker-compose file to {{ inventory_hostname }}
+#   copy:
+#     src: docker-compose/{{ application_target }}/docker-compose.yaml
+#     dest: /opt/stacks/{{ application_target }}/
+#   become: true
+
+- name: Docker Deploy | Running docker-compose up
+  docker_compose: 
+    project_src: /opt/stacks/{{ application_target }}/
+    state: present
+  become: true

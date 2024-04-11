@@ -1,0 +1,31 @@
+- name: Tailscale | Download gpg apt key
+  get_url:
+    url: https://pkgs.tailscale.com/stable/debian/{{ ansible_distribution_release }}.noarmor.gpg
+    dest: "{{ apt_key_path }}/tailscale-archive-keyring.gpg"
+    mode: "0644"
+    owner: root
+  become: yes
+
+- name: Tailscale | Add specified repository into sources list
+  uri:
+    url: https://pkgs.tailscale.com/stable/debian/{{ ansible_distribution_release }}.tailscale-keyring.list
+    dest: "{{ apt_sources_path }}/tailscale.list"
+    mode: "0644"
+    owner: root
+  become: yes
+
+- name: Tailscale | Install Tailscale
+  apt:
+    update_cache: true
+    name: tailscale
+    state: present
+  become: yes
+
+- name: Tailscale | Checking auth-key expiration
+  shell: date +"%Y-%m-%d"
+  register: today_date
+  failed_when: ts_expire < today_date.stdout
+
+- name: Tailscale | Join Tailnet
+  shell: tailscale login --accept-dns --accept-routes --ssh --authkey={{ ts_key }} 
+  become: yes

@@ -1,0 +1,17 @@
+- name: Ensure chrony is installed for ntp time sync
+  ansible.builtin.apt:
+    name:
+      - chrony
+    state: latest
+  become: yes
+  tags: 
+    - step4
+    - time
+
+- name: Set timezone using timedatectl
+  ansible.builtin.command: timedatectl set-timezone {{ timezone }}
+  become: yes
+  tags:
+    - step4
+    - time
+

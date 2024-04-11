@@ -1,0 +1,5 @@
+- hosts: dns
+  gather_facts: yes
+  roles:
+    - install-pihole
+    - install-tailscale

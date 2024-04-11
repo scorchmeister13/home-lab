@@ -1,0 +1,8 @@
+- hosts: services
+  gather_facts: no
+  vars_prompt: 
+    - name: application_target
+      prompt: Enter the application to install
+      private: false
+  roles:
+    - docker-deploy

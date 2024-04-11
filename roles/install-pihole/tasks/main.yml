@@ -1,0 +1,55 @@
+- name: Pi-Hole | Installing required packages
+  apt:
+    update_cache: yes
+    name: 
+      - python3-full
+      - python3-docker
+      - python3-pip
+      - docker-compose
+    state: present
+  become: true
+
+- name: Pi-Hole | Create configuration file
+  file:
+    path: /opt/stacks/pihole
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Pi-Hole | Create docker-compose file
+  blockinfile:
+    create: true
+    path: /opt/stacks/pihole/docker-compose.yaml
+    block: |
+      version: "3"
+      services:
+        pihole:
+          container_name: pihole
+          image: pihole/pihole:latest
+          ports:
+            - "53:53/tcp"
+            - "53:53/udp"
+            - "67:67/udp"
+            - "8080:80/tcp"
+          environment:
+            TZ: {{ timezone }}
+            WEBPASSWORD: {{ pihole_pass }}
+          volumes:
+            - './etc-pihole:/etc/pihole'
+            - './etc-dnsmasq.d:/etc/dnsmasq.d'
+          cap_add:
+            - NET_ADMIN
+          restart: always
+  become: true
+
+- name: Pi-Hole | Ensuring systemd-resolved.service is stopped
+  systemd:
+    name: systemd-resolved
+    state: stopped
+    enabled: no
+  become: true
+
+- name: Pi-Hole | Run docker compose up
+  docker_compose:
+    project_src: /opt/stacks/pihole
+  become: true

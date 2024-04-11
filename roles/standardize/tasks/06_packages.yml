@@ -1,0 +1,13 @@
+- name: Packages | Installing basic Packages
+  apt:
+    update_cache: yes
+    name: 
+      - git
+      - python3-pip
+      - python3-docker
+      - docker-compose
+      - parted
+  become: yes
+  tags:
+    - step6
+    - packages

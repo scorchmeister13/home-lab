@@ -1,0 +1,12 @@
+console_timeout: 28800 # 8 hours
+timezone: Asia/Tokyo
+ssh_port: 22
+
+local_domain: local.something
+public_domain: something.com
+
+apt_key_path: /usr/share/keyrings
+apt_sources_path: /etc/apt/sources.list.d/
+
+ts_expire: "2024-01-01"
+ts_key: tailscale-key-goes-here

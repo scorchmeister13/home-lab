@@ -1,0 +1,3 @@
+pihole_pass: put-password-here
+apt_key_path: /usr/share/keyrings
+apt_sources_path: /etc/apt/sources.list.d/
